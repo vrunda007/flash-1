@@ -1,0 +1,82 @@
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans			        
+			   http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+			   http://www.springframework.org/schema/context 
+			   http://www.springframework.org/schema/context/spring-context-3.0.xsd
+			   http://www.springframework.org/schema/tx 
+			   http://www.springframework.org/schema/tx/spring-tx-3.0.xsd
+			   http://www.springframework.org/schema/mvc
+			   http://www.springframework.org/schema/mvc/spring-mvc-4.3.xsd">
+
+	<context:component-scan
+		base-package="com.helloworld" />
+
+	<bean
+		class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+		<property name="viewClass"
+			value="org.springframework.web.servlet.view.JstlView" />
+		<property name="prefix" value="/WEB-INF/jsp/" />
+		<property name="suffix" value=".jsp" />
+	</bean>
+
+
+	<!-- ADDED JPA WITH HIBERNATE CONFIGURATION -->
+	<!-- Simple implementation of the standard JDBC DataSource interface, configuring 
+		the plain old JDBC DriverManager via bean properties -->
+	<bean id="dataSource"
+		class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+		<property name="driverClassName"
+			value="com.mysql.jdbc.Driver" />
+		<property name="url"
+			value="jdbc:mysql://localhost:3306/dbdb" />
+		<property name="username" value="root" />
+		<property name="password" value="9175490317" />
+
+	</bean>
+
+	<!-- This produces a container-managed EntityManagerFactory; rather than 
+		application-managed EntityManagerFactory as in case of LocalEntityManagerFactoryBean -->
+	<bean id="entityManagerFactoryBean"
+		class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
+
+		<property name="dataSource" ref="dataSource" />
+
+		<!-- This makes /META-INF/persistence.xml is no longer necessary -->
+		<property name="packagesToScan" value="com.helloworld" />
+
+		<!-- JpaVendorAdapter implementation for Hibernate EntityManager. Exposes 
+			Hibernate's persistence provider and EntityManager extension interface -->
+		<property name="jpaVendorAdapter">
+			<bean
+				class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter" />
+		</property>
+
+		<property name="jpaProperties">
+			<props>
+                <prop key="hibernate.hbm2ddl.auto">validate</prop>
+				<prop key="hibernate.dialect">org.hibernate.dialect.MySQL5Dialect</prop>
+			</props>
+		</property>
+	</bean>
+
+	<!-- This transaction manager is appropriate for applications that use a 
+		single JPA EntityManagerFactory for transactional data access. JTA (usually 
+		resources within the same transaction. -->
+	<bean id="transactionManager"
+		class="org.springframework.orm.jpa.JpaTransactionManager">
+		<property name="entityManagerFactory"
+			ref="entityManagerFactoryBean" />
+	</bean>
+
+	<!-- responsible for registering the necessary Spring components that power 
+		annotation-driven transaction management; such as when @Transactional methods 
+		are invoked -->
+	<tx:annotation-driven />
+
+	<mvc:resources location="/resources/" mapping="/resources/**"></mvc:resources>
+	<mvc:annotation-driven></mvc:annotation-driven>
+</beans>
