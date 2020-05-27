@@ -48,7 +48,6 @@ public class EmployeeController {
 	
 	@RequestMapping(value = "/editEmployee/{id}", method = RequestMethod.POST)
 	public ModelAndView editEmployee(@PathVariable("id") Integer employeeId) {
-		//int employeeId = Integer.parseInt(request.getParameter("id"));
 		Employee employee = employeeService.getEmployeeDetail(employeeId);
 		ModelAndView modelAndView = new ModelAndView();
 		modelAndView.addObject("employeeEdit", employee);
@@ -59,7 +58,6 @@ public class EmployeeController {
 		System.out.println(employee.getTelephone());
 		
 		modelAndView.setViewName("employeePortal");
-		//return modelAndView;
 		return null;
 	}
 	

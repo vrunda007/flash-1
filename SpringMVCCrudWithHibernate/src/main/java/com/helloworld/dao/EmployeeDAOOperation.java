@@ -72,6 +72,7 @@ public class EmployeeDAOOperation implements IEmployeeDAOOperation {
 		    	employeeEntity = (EmployeeEntity) query.getSingleResult();
 		    } catch (Exception e) {
 		        // Handle exception
+		    	System.out.println("Error while getEmployeeDetails:: Exception" + e);
 		    }
 		    return employeeEntity;
 	}

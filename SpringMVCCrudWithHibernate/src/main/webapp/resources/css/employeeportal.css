@@ -218,9 +218,9 @@ body {
 		font-weight: normal;
 	}
 	
-#indexPage {
-  background-color: powderblue;
-}
-#indexPage h1 {
-  color: blue;
-}
+	#indexPage {
+  		background-color: powderblue;
+	}
+	#indexPage h1 {
+  		color: blue;
+	}
